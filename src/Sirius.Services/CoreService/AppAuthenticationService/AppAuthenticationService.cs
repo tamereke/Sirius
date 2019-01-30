@@ -30,6 +30,7 @@ namespace Sirius.Services.CoreService
             , IHttpContextAccessor httpContextAccessor
             , IUserService userService
             , IMainRepository<User> userRepository)
+            : base(logger)
         {
             _logger = logger;
             _httpContextAccessor = httpContextAccessor;
@@ -39,37 +40,9 @@ namespace Sirius.Services.CoreService
 
         public OperationResult<User> Login(LoginModel loginModel)
         {
-            return Execute<User>(_logger, result =>
-             {
-                 var user = _userService.GetUserByUserName(loginModel.UserName)?.Item;
-                 if (user == null)
-                 {
-                     result.SetError("Kullanici bulunamadi");
-                     return;
-                 }
-                 if (user.Password != loginModel.Password)
-                 {
-                     result.SetError("Hatali Sifre");
-                     return;
-                 }
-
-                 var userClaims = _userService.GetClaims(user.Id);
-                 var claims = new List<System.Security.Claims.Claim>();
-                 claims.Add(new System.Security.Claims.Claim(ClaimTypes.Name, user.Id.ToString()));
-                 claims.AddRange(userClaims.Select(x => new System.Security.Claims.Claim(GeneralConst.ClaimName, x.Name)).ToList());
-
-                 ClaimsIdentity userIdentity = new ClaimsIdentity(claims, "SiriusApp");
-                 ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
-                 _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal).Wait();
-             });
-        }
-
-        public OperationResult<User> LoginFromWebApi(LoginModel loginModel)
-        {
-            return Execute<User>(_logger, result =>
+            return Execute<User>(result =>
             {
                 var user = _userService.GetUserByUserName(loginModel.UserName)?.Item;
-
                 if (user == null)
                 {
                     result.SetError("Kullanici bulunamadi");
@@ -86,20 +59,48 @@ namespace Sirius.Services.CoreService
                 claims.Add(new System.Security.Claims.Claim(ClaimTypes.Name, user.Id.ToString()));
                 claims.AddRange(userClaims.Select(x => new System.Security.Claims.Claim(GeneralConst.ClaimName, x.Name)).ToList());
 
+                ClaimsIdentity userIdentity = new ClaimsIdentity(claims, "SiriusApp");
+                ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+                _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal).Wait();
+            });
+        }
+
+        public OperationResult<User> LoginFromWebApi(LoginModel loginModel)
+        {
+            return Execute<User>(result =>
+           {
+               var user = _userService.GetUserByUserName(loginModel.UserName)?.Item;
+
+               if (user == null)
+               {
+                   result.SetError("Kullanici bulunamadi");
+                   return;
+               }
+               if (user.Password != loginModel.Password)
+               {
+                   result.SetError("Hatali Sifre");
+                   return;
+               }
+
+               var userClaims = _userService.GetClaims(user.Id);
+               var claims = new List<System.Security.Claims.Claim>();
+               claims.Add(new System.Security.Claims.Claim(ClaimTypes.Name, user.Id.ToString()));
+               claims.AddRange(userClaims.Select(x => new System.Security.Claims.Claim(GeneralConst.ClaimName, x.Name)).ToList());
 
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SiriusCore.Instance.AppConfig.WebApiSettings.SecretKey));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-                var expires = DateTime.Now.AddDays(Convert.ToDouble(SiriusCore.Instance.AppConfig.WebApiSettings.Expires));
 
-                var token = new JwtSecurityToken(issuer: null
-                    , audience: null
-                    , claims: claims
-                    , expires: expires
-                    , signingCredentials: creds
-                );
-                user.Token = new JwtSecurityTokenHandler().WriteToken(token);
-                result.Item = user;
+               var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SiriusCore.Instance.AppConfig.WebApiSettings.SecretKey));
+               var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+               var expires = DateTime.Now.AddDays(Convert.ToDouble(SiriusCore.Instance.AppConfig.WebApiSettings.Expires));
+
+               var token = new JwtSecurityToken(issuer: null
+                   , audience: null
+                   , claims: claims
+                   , expires: expires
+                   , signingCredentials: creds
+               );
+               user.Token = new JwtSecurityTokenHandler().WriteToken(token);
+               result.Item = user;
 
 
                 //// authentication successful so generate jwt token
@@ -117,14 +118,14 @@ namespace Sirius.Services.CoreService
                 // remove password before returning
                 user.Password = null;
 
-               
 
-            });
+
+           });
         }
 
         public OperationResult LogOut()
         {
-            return Execute(_logger, result =>
+            return Execute(result =>
              {
                  _httpContextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).Wait();
              });

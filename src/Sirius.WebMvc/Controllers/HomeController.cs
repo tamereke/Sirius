@@ -5,27 +5,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Sirius.Core;
-using Sirius.Services.TestService;
+using Sirius.Services.CoreService;
 using Sirius.WebMvc.Models;
 
 namespace Sirius.WebMvc.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ITestService testservice;
         private readonly IAppLogger<HomeController> logger;
+        private readonly IUserService _userService;
 
-        public HomeController(ITestService testservice, IAppLogger<HomeController> logger)
-        {
-            this.testservice = testservice;
+        public HomeController(IAppLogger<HomeController> logger,IUserService userService)
+        { 
             this.logger = logger;
+            _userService = userService;
         }
         public IActionResult Index()
-        {
-            var val = testservice.GetValue();
-
+        {  
             logger.Log("first log");
-
+           var a = _userService.GetItems(x => x.UserName == "xxxx");
             return View();
         }
 

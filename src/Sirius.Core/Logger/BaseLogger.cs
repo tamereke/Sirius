@@ -9,8 +9,6 @@ namespace Sirius.Core.Logger
         public abstract bool Enabled {get;}
 
         public abstract void Dispose();
-
-        //public   abstract IAppLogger<TLoggerCategory> GetLogger<TLoggerCategory>();
         public abstract void Log(string message); 
         public abstract void LogDebug(string message); 
         public abstract void LogError(Exception exception);

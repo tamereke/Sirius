@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace Sirius.Services.CoreService
 {
-    public class UserService : BaseService, IUserService
+    public class UserService : DatabaseEntityService<User>, IUserService
     {
         private readonly IAppLogger<UserService> _logger;
         private readonly IMainRepository<User> _userRepository;
@@ -23,6 +23,7 @@ namespace Sirius.Services.CoreService
             , IMainRepository<UserRole> userRoleRepository
             , IMainRepository<Claim> claimRepository
             , IMainRepository<RoleClaim> roleClaimRepository)
+            : base(userRepository, logger)
         {
             _logger = logger;
             _userRepository = userRepository;
@@ -33,26 +34,26 @@ namespace Sirius.Services.CoreService
 
         public OperationResult<List<User>> GetUsers()
         {
-            return Execute<List<User>>(_logger, result =>
-           {
-               result.Item = _userRepository.Items;
-           });
+            return Execute<List<User>>(result =>
+         {
+             result.Item = _userRepository.Items;
+         });
         }
 
         public OperationResult<User> GetUserById(int id)
         {
-            return Execute<User>(_logger, result =>
-            {
-                result.Item = _userRepository.Items.FirstOrDefault(x => x.Id == id);
-            });
+            return Execute<User>(result =>
+          {
+              result.Item = _userRepository.Items.FirstOrDefault(x => x.Id == id);
+          });
         }
 
         public OperationResult<User> GetUserByUserName(string userName)
         {
-            return Execute<User>(_logger, result =>
-            {
-                result.Item = _userRepository.Items.FirstOrDefault(x => x.UserName == userName);
-            });
+            return Execute<User>(result =>
+          {
+              result.Item = _userRepository.Items.FirstOrDefault(x => x.UserName == userName);
+          });
         }
 
         public List<Claim> GetClaims(int userId)

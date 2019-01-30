@@ -6,16 +6,21 @@ using System.Text;
 
 namespace Sirius.Services
 {
-    //TODO : Create DatabaseEntityService 
     public class BaseService
     {
-        /// <summary>
-        /// Executes the 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="action"></param>
-        /// <returns></returns>
-        public OperationResult Execute(IAppLogger logger, Action<OperationResult> action)
+        private readonly IAppLogger _logger;
+
+        public BaseService(IAppLogger logger)
+        { 
+            _logger = logger;
+        }
+
+        public BaseService()
+        {
+
+        }
+
+        public OperationResult Execute( Action<OperationResult> action)
         {
             OperationResult result = new OperationResult();
             try
@@ -24,13 +29,13 @@ namespace Sirius.Services
             }
             catch (Exception ex)
             {
-                logger.LogError(ex);
+                _logger?.LogError(ex);
                 result.SetError(ex);
             }
             return result;
         }
 
-        public OperationResult<T> Execute<T>(IAppLogger logger, Action<OperationResult<T>> action)
+        public OperationResult<T> Execute<T>( Action<OperationResult<T>> action)
         {
             OperationResult<T> result = new OperationResult<T>();
             try
@@ -39,7 +44,7 @@ namespace Sirius.Services
             }
             catch (Exception ex)
             {
-                logger.LogError(ex);
+                _logger?.LogError(ex);
                 result.SetError(ex);
             }
             return result;

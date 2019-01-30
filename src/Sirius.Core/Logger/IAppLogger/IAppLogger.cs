@@ -18,8 +18,6 @@ namespace Sirius.Core
 
         void Log(string message);
 
-        //IAppLogger<TLoggerCategory> GetLogger<TLoggerCategory>();
-
 
         //void Debug(Exception exception);
         //void Debug(string format, params object[] args);

@@ -24,8 +24,7 @@ namespace Sirius.Core
         {
             get
             {
-                
-                return   true;//ApplicationConfiguration.Instance?.Loging?.CustomSettings :
+                return SiriusCore.Instance.AppConfig.Loging.CustomSettings.Enabled;
             }
         }
 
@@ -77,8 +76,7 @@ namespace Sirius.Core
         public override void Dispose()
         {
             //NLog.LogManager.Shutdown();
-        }
-
+        } 
 
         //public void Debug(Exception exception)
         //{

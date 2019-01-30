@@ -9,13 +9,12 @@ using System.Text;
 namespace Sirius.Services.CoreService
 {
     [ServiceRegister(RegisterTypes.PerLifetimeScope, typeof(UserService))]
-    public interface IUserService
+    public interface IUserService : IDatabaseEntityService<User>
     {
         OperationResult<List<User>> GetUsers();
         OperationResult<User> GetUserById(int id);
         OperationResult<User> GetUserByUserName(string userName);
         bool IsPermitted(string lastChanged);
         List<Claim> GetClaims(int userId);
-
     }
 }
