@@ -46,7 +46,7 @@ namespace Sirius.Core.AppConfig
         /// <summary>
         /// Get or set Loging
         /// </summary>
-        public Loging Loging
+        public Logging Logging
         { get; private set; }
         /// <summary>
         /// Create singleton instance
@@ -65,8 +65,11 @@ namespace Sirius.Core.AppConfig
             WebApiSettings = new WebApiSettings();
             configuration.GetSection("WebApiSettings").Bind(WebApiSettings);
 
-            Loging = new Loging();
-            configuration.GetSection("Logging").Bind(WebApiSettings);
+            Logging = new Logging();
+            configuration.GetSection("Logging").Bind(Logging); 
+
+
+
 
             return this;
         }

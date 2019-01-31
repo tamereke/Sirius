@@ -23,7 +23,7 @@ namespace Sirius.WebMvc.Controllers
         public IActionResult Index()
         {  
             logger.Log("first log");
-           var a = _userService.GetItems(x => x.UserName == "xxxx");
+            var a = _userService.GetUsers();
             return View();
         }
 

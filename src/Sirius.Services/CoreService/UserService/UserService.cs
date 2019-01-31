@@ -2,6 +2,7 @@
 using Sirius.Core.Data;
 using Sirius.Core.Models;
 using Sirius.Entities;
+using Sirius.Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,9 +36,9 @@ namespace Sirius.Services.CoreService
         public OperationResult<List<User>> GetUsers()
         {
             return Execute<List<User>>(result =>
-         {
-             result.Item = _userRepository.Items;
-         });
+            { 
+                result.Item = _userRepository.Items;
+            });
         }
 
         public OperationResult<User> GetUserById(int id)

@@ -24,7 +24,7 @@ namespace Sirius.Core
         {
             get
             {
-                return SiriusCore.Instance.AppConfig.Loging.CustomSettings.Enabled;
+                return true; //SiriusCore.Instance.AppConfig.Logging.CustomSettings.Enabled;
             }
         }
 

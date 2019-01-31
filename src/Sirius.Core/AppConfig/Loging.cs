@@ -4,8 +4,12 @@ using System.Text;
 
 namespace Sirius.Core.AppConfig
 {
-    public class Loging : IAppSetting
+    public class Logging : IAppSetting
     {
+        public Logging()
+        {
+            CustomSettings = new CustomSettings();
+        }
         public CustomSettings CustomSettings
         { get; set; }
     }
