@@ -16,5 +16,6 @@ namespace Sirius.Services
         OperationResult<TEntity> Insert(TEntity item);
         OperationResult<TEntity> Update(TEntity item);
         OperationResult<TEntity> Delete(TEntity item);
+        OperationResult<TEntity> Delete(int id);
     }
 }

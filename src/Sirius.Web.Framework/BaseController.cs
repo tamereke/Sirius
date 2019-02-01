@@ -9,7 +9,7 @@ using System.Text;
 namespace Sirius.Web.Framework
 {
     [Authorize()]
-    public class BaseController:Controller
+    public class BaseController : ControllerBase
     {
         private User _CurrentUser;
 

@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
+using System.Data.SqlClient; 
 
 namespace Sirius.Core.Data
 {
@@ -110,30 +111,30 @@ namespace Sirius.Core.Data
         /// <param name="timeout">The timeout to use for command. Note that the command timeout is distinct from the connection timeout, which is commonly set on the database connection string</param>
         /// <param name="parameters">Parameters to use with the SQL</param>
         /// <returns>The number of rows affected</returns>
-        //public virtual int ExecuteSqlCommand(RawSqlString sql, bool doNotEnsureTransaction = false, int? timeout = null, params object[] parameters)
-        //{
-        //    //set specific command timeout
-        //    var previousTimeout = this.Database.GetCommandTimeout();
-        //    this.Database.SetCommandTimeout(timeout);
+        public virtual int ExecuteSqlCommand(RawSqlString sql, bool doNotEnsureTransaction = false, int? timeout = null, params object[] parameters)
+        {
+            //set specific command timeout
+            var previousTimeout = this.Database.GetCommandTimeout();
+            this.Database.SetCommandTimeout(timeout);
 
-        //    var result = 0;
-        //    if (!doNotEnsureTransaction)
-        //    {
-        //        //use with transaction
-        //        using (var transaction = this.Database.BeginTransaction())
-        //        {
-        //            result = this.Database.ExecuteSqlCommand(sql, parameters);
-        //            transaction.Commit();
-        //        }
-        //    }
-        //    else
-        //        result = this.Database.ExecuteSqlCommand(sql, parameters);
+            var result = 0;
+            if (!doNotEnsureTransaction)
+            {
+                //use with transaction
+                using (var transaction = this.Database.BeginTransaction())
+                {
+                    result = this.Database.ExecuteSqlCommand(sql, parameters);
+                    transaction.Commit();
+                }
+            }
+            else
+                result = this.Database.ExecuteSqlCommand(sql, parameters);
 
-        //    //return previous timeout back
-        //    this.Database.SetCommandTimeout(previousTimeout);
+            //return previous timeout back
+            this.Database.SetCommandTimeout(previousTimeout);
 
-        //    return result;
-        //}
+            return result;
+        }
 
         /// <summary>
         /// Detach an entity from the context

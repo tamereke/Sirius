@@ -30,7 +30,7 @@ namespace Sirius.Services
             catch (Exception ex)
             {
                 _logger?.LogError(ex);
-                result.SetError(ex);
+                result.SetError(ex.ToString());
             }
             return result;
         }
@@ -45,7 +45,7 @@ namespace Sirius.Services
             catch (Exception ex)
             {
                 _logger?.LogError(ex);
-                result.SetError(ex);
+                result.SetError(ex.ToString());
             }
             return result;
         }

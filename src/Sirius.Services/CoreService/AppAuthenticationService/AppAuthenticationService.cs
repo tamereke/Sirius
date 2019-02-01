@@ -70,13 +70,13 @@ namespace Sirius.Services.CoreService
             return Execute<User>(result =>
            {
                var user = _userService.GetUserByUserName(loginModel.UserName)?.Item;
-
+               user = user.Clone() as User;
                if (user == null)
                {
                    result.SetError("Kullanici bulunamadi");
                    return;
                }
-               if (user.Password != loginModel.Password)
+               if (user.DecryptedPassword() != loginModel.Password)
                {
                    result.SetError("Hatali Sifre");
                    return;
@@ -102,20 +102,6 @@ namespace Sirius.Services.CoreService
                user.Token = new JwtSecurityTokenHandler().WriteToken(token);
                result.Item = user;
 
-
-                //// authentication successful so generate jwt token
-                //var tokenHandler = new JwtSecurityTokenHandler();
-                //var key = Encoding.UTF8.GetBytes(ApplicationConfiguration.Instance.WebApiSettings.SecretKey);
-                //var tokenDescriptor = new SecurityTokenDescriptor
-                //{
-                //    Subject = new ClaimsIdentity(claims),
-                //    Expires = DateTime.UtcNow.AddMinutes(ApplicationConfiguration.Instance.WebApiSettings.Expires),
-                //    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
-                //};
-                //var token = tokenHandler.CreateToken(tokenDescriptor);
-                //user.Token = tokenHandler.WriteToken(token);
-
-                // remove password before returning
                 user.Password = null;
 
 

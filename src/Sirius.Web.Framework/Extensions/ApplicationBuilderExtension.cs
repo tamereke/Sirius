@@ -15,13 +15,8 @@ namespace Sirius.Web.Framework.Extensions
     public static class ApplicationBuilderExtension
     {
         public static void ConfigureRequestPipeline(this IApplicationBuilder app, IHostingEnvironment env)
-        {
-       
-
-            app.UseMiddleware<ExceptionMiddleware>();
- 
-
-
+        { 
+            //app.UseMiddleware<ExceptionMiddleware>(); 
         }
     }
 }

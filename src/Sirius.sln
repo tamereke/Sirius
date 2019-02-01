@@ -3,17 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sirius.Core", "Sirius.Core\Sirius.Core.csproj", "{5C38F770-5446-420D-A2FF-03AC569B3B76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sirius.Core", "Sirius.Core\Sirius.Core.csproj", "{5C38F770-5446-420D-A2FF-03AC569B3B76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sirius.Services", "Sirius.Services\Sirius.Services.csproj", "{0F7A2EAB-AC18-44B9-B392-8290DA3D32F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sirius.Services", "Sirius.Services\Sirius.Services.csproj", "{0F7A2EAB-AC18-44B9-B392-8290DA3D32F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sirius.WebMvc", "Sirius.WebMvc\Sirius.WebMvc.csproj", "{107ECCBC-51FC-4DA5-A081-57DCC9C11E40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sirius.WebMvc", "Sirius.WebMvc\Sirius.WebMvc.csproj", "{107ECCBC-51FC-4DA5-A081-57DCC9C11E40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sirius.Data", "Sirius.Data\Sirius.Data.csproj", "{9BB1A5BE-A3C0-4D7D-950C-161DC5071E69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sirius.Data", "Sirius.Data\Sirius.Data.csproj", "{9BB1A5BE-A3C0-4D7D-950C-161DC5071E69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sirius.Entities", "Sirius.Entities\Sirius.Entities.csproj", "{04153AEE-6722-411D-A266-144EE73926F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sirius.Entities", "Sirius.Entities\Sirius.Entities.csproj", "{04153AEE-6722-411D-A266-144EE73926F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sirius.Web.Framework", "Sirius.Web.Framework\Sirius.Web.Framework.csproj", "{759151D1-990D-4B76-BAAF-11D992BE180B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sirius.Web.Framework", "Sirius.Web.Framework\Sirius.Web.Framework.csproj", "{759151D1-990D-4B76-BAAF-11D992BE180B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sirius.WepApi", "Sirius.WepApi\Sirius.WepApi.csproj", "{0B05D420-7630-481E-98F5-82E6F58FA749}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4E096FF3-38AF-434E-8E76-4BEF4BF28579}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +52,10 @@ Global
 		{759151D1-990D-4B76-BAAF-11D992BE180B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{759151D1-990D-4B76-BAAF-11D992BE180B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{759151D1-990D-4B76-BAAF-11D992BE180B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B05D420-7630-481E-98F5-82E6F58FA749}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B05D420-7630-481E-98F5-82E6F58FA749}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B05D420-7630-481E-98F5-82E6F58FA749}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B05D420-7630-481E-98F5-82E6F58FA749}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using Sirius.Services.BusinessService;
 using Sirius.Services.CoreService;
+using Sirius.Web.Framework.Filters;
 
 namespace Sirius.Web.Framework.Extensions
 {
@@ -29,7 +30,7 @@ namespace Sirius.Web.Framework.Extensions
     {
         public static IServiceProvider ConfigureApplicationServices(this IServiceCollection services, IConfiguration configuration, AuthenticationTypes authenticationType)
         {
-            
+
             try
             {
                 InitAssembly();
@@ -46,12 +47,17 @@ namespace Sirius.Web.Framework.Extensions
                 //Configure database
                 services.ConfigureDatabase(configuration);
                 //Add mvc
-                services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                services.AddMvc(x => x.Filters.Add(typeof(HttpGlobalExceptionFilter)))
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
                 if (authenticationType == AuthenticationTypes.Jwt)
                     services.ConfigureJwtAuthentication(configuration);
-                
+
                 //Init application
                 var serviceProvider = SiriusCore.Instance.Initialize(services, configuration);
+
+                //Claim const sync to db
+                LoadClaims();
 
                 SiriusCore.Instance.Resolve<IAppLogger<SiriusCore>>().LogInfo("Application started");
 
@@ -62,6 +68,11 @@ namespace Sirius.Web.Framework.Extensions
             {
                 throw ex;
             }
+        }
+
+        private static void LoadClaims()
+        {
+            SiriusCore.Instance.Resolve<IClaimService>().LoadClaims();
         }
 
         private static void InitAssembly()
@@ -148,6 +159,6 @@ namespace Sirius.Web.Framework.Extensions
             });
         }
 
-         
+
     }
 }

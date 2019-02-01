@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Transactions;
 
 namespace Sirius.Services.CoreService
 {
@@ -36,7 +37,7 @@ namespace Sirius.Services.CoreService
         public OperationResult<List<User>> GetUsers()
         {
             return Execute<List<User>>(result =>
-            { 
+            {
                 result.Item = _userRepository.Items;
             });
         }
@@ -44,17 +45,17 @@ namespace Sirius.Services.CoreService
         public OperationResult<User> GetUserById(int id)
         {
             return Execute<User>(result =>
-          {
-              result.Item = _userRepository.Items.FirstOrDefault(x => x.Id == id);
-          });
+            {
+                result.Item = _userRepository.Items.FirstOrDefault(x => x.Id == id);
+            });
         }
 
         public OperationResult<User> GetUserByUserName(string userName)
         {
             return Execute<User>(result =>
-          {
-              result.Item = _userRepository.Items.FirstOrDefault(x => x.UserName == userName);
-          });
+            {
+                result.Item = _userRepository.Items.FirstOrDefault(x => x.UserName == userName);
+            });
         }
 
         public List<Claim> GetClaims(int userId)
@@ -65,6 +66,24 @@ namespace Sirius.Services.CoreService
                               where ur.UserId == userId
                               select c;
             return claimsQuery.ToList();
+        } 
+
+        public override OperationResult<User> Delete(User item)
+        {
+            return Execute<User>(result =>
+            {
+                using (var scope = new TransactionScope())
+                {
+                    var roles = _userRoleRepository.Table.Where(x => x.UserId == item.Id).ToList();
+                    for (int i = 0; i < roles.Count(); i++)
+                    {
+                        var role = roles[i];
+                        _userRoleRepository.Delete(role);
+                    }
+                    _userRepository.Delete(item);
+                    scope.Complete();
+                }
+            });
         }
 
         public bool IsPermitted(string lastChanged)

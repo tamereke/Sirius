@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Sirius.Services
 {
-    public class DatabaseEntityService<TEntity> : BaseService
+    public class DatabaseEntityService<TEntity> : BaseService, IDatabaseEntityService<TEntity>
         where TEntity : IEntity
     {
         protected readonly IRepository<TEntity> _ServiceRepository;
@@ -26,12 +26,12 @@ namespace Sirius.Services
         public virtual OperationResult<List<TEntity>> GetItems(Func<TEntity, bool> filter)
         {
             return Execute<List<TEntity>>(result =>
-            { 
+            {
                 result.Item = _ServiceRepository.Table.Where(filter).ToList();
             });
         }
 
-        public OperationResult<TEntity> GetById(int id)
+        public virtual OperationResult<TEntity> GetById(int id)
         {
             return Execute<TEntity>(result =>
             {
@@ -62,6 +62,20 @@ namespace Sirius.Services
             {
                 _ServiceRepository.Delete(item);
                 result.Item = item;
+            });
+        }
+
+        public virtual OperationResult<TEntity> Delete(int id)
+        {
+            return Execute<TEntity>(result =>
+            {
+                var item = _ServiceRepository.GetById(id);
+                if (item != null)
+                {
+                    var result1 = Delete(item);
+                    if (!result1.Ok)
+                        result.SetError(result1.Message);
+                }
             });
         }
     }
