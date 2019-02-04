@@ -12,7 +12,7 @@ namespace Sirius.Services.CoreService
     public interface IAppAuthencticationService
     {
         OperationResult<User> Login(LoginModel loginModel);
-        OperationResult<User> LoginFromWebApi(LoginModel loginModel);
+        OperationResult<User> LoginWithJwtToken(LoginModel loginModel);
         OperationResult LogOut();
     }
 }

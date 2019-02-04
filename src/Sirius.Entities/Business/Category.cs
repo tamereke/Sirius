@@ -12,6 +12,6 @@ namespace Sirius.Entities
     [CacheEntity()]
     public class Category: BaseEntity
     {
-        public string CategoryName { get; set; } 
+        public string Name { get; set; } 
     }
 }

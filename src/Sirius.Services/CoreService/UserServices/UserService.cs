@@ -34,6 +34,18 @@ namespace Sirius.Services.CoreService
             _roleClaimRepository = roleClaimRepository;
         }
 
+        public override OperationResult<User> Insert(User item)
+        {
+            return Execute<User>(result =>
+            {
+               var salt =  ApplicationCryptography.CreateRandomNumber().ToString();
+                item.PasswordSalt = salt;
+                item.Password = item.EncryptPassword(salt);
+                _userRepository.Insert(item);
+                result.Item = item;
+            });
+        }
+
         public OperationResult<List<User>> GetUsers()
         {
             return Execute<List<User>>(result =>

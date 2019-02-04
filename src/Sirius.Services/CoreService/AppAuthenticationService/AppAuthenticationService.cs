@@ -48,13 +48,13 @@ namespace Sirius.Services.CoreService
                     result.SetError("Kullanici bulunamadi");
                     return;
                 }
-                if (user.Password != loginModel.Password)
+                if (user.DecryptedPassword() != loginModel.Password)
                 {
                     result.SetError("Hatali Sifre");
                     return;
                 }
 
-                var userClaims = _userService.GetClaims(user.Id);
+                var userClaims = _userService.GetClaims(user.Id); 
                 var claims = new List<System.Security.Claims.Claim>();
                 claims.Add(new System.Security.Claims.Claim(ClaimTypes.Name, user.Id.ToString()));
                 claims.AddRange(userClaims.Select(x => new System.Security.Claims.Claim(GeneralConst.ClaimName, x.Name)).ToList());
@@ -65,7 +65,7 @@ namespace Sirius.Services.CoreService
             });
         }
 
-        public OperationResult<User> LoginFromWebApi(LoginModel loginModel)
+        public OperationResult<User> LoginWithJwtToken(LoginModel loginModel)
         {
             return Execute<User>(result =>
            {

@@ -27,7 +27,7 @@ namespace Sirius.WepApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var response = _appAuthencticationService.LoginFromWebApi(loginModel);
+            var response = _appAuthencticationService.LoginWithJwtToken(loginModel);
             if (!response.Ok)
                 return BadRequest(response);
             return Ok(response);

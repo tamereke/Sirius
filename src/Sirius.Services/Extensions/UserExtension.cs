@@ -14,5 +14,12 @@ namespace Sirius.Services
                 throw new ArgumentNullException("User");
             return ApplicationCryptography.DecryptRijndael(user.Password, user.PasswordSalt);
         }
+
+        public static string EncryptPassword(this User user,string salt)
+        {
+            if (user == null)
+                throw new ArgumentNullException("User");
+            return ApplicationCryptography.EncryptRijndael(user.Password, salt);
+        }
     }
 }
