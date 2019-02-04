@@ -23,6 +23,8 @@ using System.Text;
 using Sirius.Services.BusinessService;
 using Sirius.Services.CoreService;
 using Sirius.Web.Framework.Filters;
+using AutoMapper;
+using Sirius.Core.Mapping;
 
 namespace Sirius.Web.Framework.Extensions
 {
@@ -30,7 +32,6 @@ namespace Sirius.Web.Framework.Extensions
     {
         public static IServiceProvider ConfigureApplicationServices(this IServiceCollection services, IConfiguration configuration, AuthenticationTypes authenticationType)
         {
-
             try
             {
                 InitAssembly();
@@ -46,6 +47,8 @@ namespace Sirius.Web.Framework.Extensions
                 services.ConfigureSession(configuration);
                 //Configure database
                 services.ConfigureDatabase(configuration);
+                //configure automapper
+                services.AddAutoMapper();
                 //Add mvc
                 services.AddMvc(x => x.Filters.Add(typeof(HttpGlobalExceptionFilter)))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -87,6 +90,11 @@ namespace Sirius.Web.Framework.Extensions
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
+        public static void AddAutoMapper(this IServiceCollection services)
+        {
+            services.AddSingleton(MapperManager.CreateMapper());
+        }
+
         public static void ConfigureDatabase(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionStrings = ApplicationConfiguration.GetSection<ConnectionStrings>(configuration);
@@ -115,24 +123,15 @@ namespace Sirius.Web.Framework.Extensions
 
         public static void ConfigureCookieAuthentication(this IServiceCollection services)
         {
-
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
                     options.LoginPath = "/Login/Login/";
                     options.AccessDeniedPath = "/Login/AccessDenied/";
                     options.LogoutPath = "/Login/Logoff/";
-                    options.EventsType = typeof(ApplicationCookieAuthenticationEvents);
+                   /* options.EventsType = typeof(ApplicationCookieAuthenticationEvents);*/
                 });
             services.AddScoped<ApplicationCookieAuthenticationEvents>();
-
-            #region ApplicationUser
-            //services.AddDbContext<ApplicationIdentityDbContext>
-            //   (options => options.UseSqlServer(AppCore.Instance.AppConfig.Resolve<ConnectionStrings>().DefaultConnection));
-            //services.AddIdentity<ApplicationUser, ApplicationRole>()
-            //    .AddEntityFrameworkStores<ApplicationIdentityDbContext>()
-            //    .AddDefaultTokenProviders(); 
-            #endregion
         }
 
         public static void ConfigureJwtAuthentication(this IServiceCollection services, IConfiguration configuration)

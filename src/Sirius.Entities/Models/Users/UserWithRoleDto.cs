@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Sirius.Entities.Models
 {
-    public class UserWithRole
+    public class UserWithRoleDto
     {
         public User User
         { get; set; }

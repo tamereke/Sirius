@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Sirius.Entities;
+using Sirius.Entities.Models;
 
 namespace Sirius.WepApi.Controllers
 {
@@ -10,10 +13,17 @@ namespace Sirius.WepApi.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly IMapper _mapper;
+
+        public ValuesController(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
-        {
+        {  
             return new string[] { "value1", "value2" };
         }
 
