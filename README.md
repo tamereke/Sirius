@@ -1,2 +1,2 @@
 # Sirius
-.Net Core autofac
+.Net Core
